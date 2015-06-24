@@ -3,7 +3,7 @@
     <head> 
         <meta charset="utf-8">
         <title>Ders Örnekleri</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>        
 
         <!-- Tasarım Kodları Başlangıç -->
         <style>
@@ -23,25 +23,33 @@
 
         <!-- Ders Kodları Başlangıç -->
         <script>
-            function form_kontrolu() 
-            { 
-                var kadi = $("input[name=kadi]").val();
-                var sifre1 = $("input[name=sifre1]").val();
-                var sifre2 = $("input[name=sifre2]").val();
-                var email = $("input[name=email]").val();
-                var atpos=email.indexOf("@");
-                var dotpos=email.lastIndexOf(".");   
+            $(document).ready(function(){
+                $("#uye_formu").on("keyup", function(event){     
+                    form_kontrolu();
+                });
+            });
 
-                if ( kadi==null || kadi=="" || kadi.length < 4 ) 
-                    $('.uyari').html("Kullanıcı adı 4 karakterden az olamaz"); 
-                else if ( sifre1 == null || sifre1 == "" || sifre2 == null || sifre2 == "" ) 
+            var form_kontrolu = function(){
+                var kadi = $("#kadi").val();
+                var sifre1 = $("#sifre1").val();
+                var sifre2 = $("#sifre2").val();
+                var email = $("#email").val();
+                var atpos=email.indexOf("@");
+                var dotpos=email.lastIndexOf(".");
+
+                if ( kadi==null || kadi=="" || kadi.length < 4 )
+                    $('.uyari').html("Kullanıcı adı 4 karakterden az olamaz");
+                else if ( sifre1 == null || sifre1 == "" || sifre2 == null || sifre2 == "" )
                     $('.uyari').html("Şifreyi boş bırakmayın");
-                else if ( !(sifre1 == sifre2) )
-                    $('.uyari').html("Şifreler eşleşmiyor");
-                else if ( atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length )
-                    $('.uyari').html("Geçerli email adresi girin");
-                else 
-                    $('.uyari').empty(); 
+                    else if ( !(sifre1 == sifre2) )
+                        $('.uyari').html("Şifreler eşleşmiyor");
+                        else if ( atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length )
+                            $('.uyari').html("Geçerli email adresi girin");
+                            else
+                            {
+                                $('.uyari').empty();
+                                $('#uye_formu').removeAttr('onsubmit');
+                            }
             }
         </script>  
         <!-- Ders Kodları Bitiş -->
@@ -49,18 +57,18 @@
     </head>
     <body>
         <div id="uyelik_formu">
-            <form name="uye_formu" action="jquery_form_kontrolu_post.php" method="post">
+            <form name="form" id="uye_formu" action="<?php echo site_url('ornek/jquery_form_kontrolu_post'); ?>" method="post" onsubmit="return false;">
                 <label>Kullanıcı Adı:</label>
-                <input type="text" name="kadi" onkeyup="form_kontrolu()" >
+                <input type="text" id="kadi" name="kadi">
                 <br>
                 <label>Şifre:</label>
-                <input type="password" name="sifre1" onkeyup="form_kontrolu()" >
+                <input type="password" id="sifre1" name="sifre1">
                 <br>
                 <label>Şifre (Tekrar):</label>
-                <input type="password" name="sifre2" onkeyup="form_kontrolu()" >
+                <input type="password" id="sifre2" name="sifre2">
                 <br>
                 <label>E-Mail:</label>
-                <input type="text" name="email" onkeyup="form_kontrolu()" >
+                <input type="text" id="email" name="email">
                 <br>
                 <input type="submit" value="Kaydet!">
             </form>
